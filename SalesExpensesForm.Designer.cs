@@ -45,6 +45,7 @@
             this.DashboardButton = new Bunifu.Framework.UI.BunifuThinButton2();
             this.showingText = new System.Windows.Forms.Label();
             this.TrackerView = new Bunifu.Framework.UI.BunifuCustomDataGrid();
+            this.exit = new System.Windows.Forms.Label();
             this.UserCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VatableCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VatCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -317,6 +318,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.TrackerView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TrackerView.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.TrackerView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.TrackerView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.DarkMagenta;
@@ -341,38 +343,57 @@
             this.TrackerView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.TrackerView.Size = new System.Drawing.Size(747, 477);
             this.TrackerView.TabIndex = 8;
+            this.TrackerView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.TrackerView_CellBeginEdit);
             this.TrackerView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.TrackerView_CellEndEdit);
+            // 
+            // exit
+            // 
+            this.exit.AutoSize = true;
+            this.exit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exit.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exit.Location = new System.Drawing.Point(74, 557);
+            this.exit.Name = "exit";
+            this.exit.Size = new System.Drawing.Size(93, 16);
+            this.exit.TabIndex = 9;
+            this.exit.Text = "exit application";
+            this.exit.Click += new System.EventHandler(this.exit_Click);
             // 
             // UserCol
             // 
             this.UserCol.HeaderText = "User";
             this.UserCol.Name = "UserCol";
             this.UserCol.ReadOnly = true;
-            this.UserCol.Width = 254;
+            this.UserCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.UserCol.Width = 226;
             // 
             // VatableCol
             // 
             this.VatableCol.HeaderText = "Vatable";
             this.VatableCol.Name = "VatableCol";
+            this.VatableCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.VatableCol.Width = 150;
             // 
             // VatCol
             // 
             this.VatCol.HeaderText = "Vat";
             this.VatCol.Name = "VatCol";
+            this.VatCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.VatCol.Width = 150;
             // 
             // TotalCol
             // 
             this.TotalCol.HeaderText = "Total";
             this.TotalCol.Name = "TotalCol";
-            this.TotalCol.Width = 150;
+            this.TotalCol.ReadOnly = true;
+            this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TotalCol.Width = 180;
             // 
             // SalesExpensesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1065, 645);
+            this.Controls.Add(this.exit);
             this.Controls.Add(this.TrackerView);
             this.Controls.Add(this.showingText);
             this.Controls.Add(this.companyText);
@@ -411,6 +432,7 @@
         private Bunifu.Framework.UI.BunifuThinButton2 DashboardButton;
         private System.Windows.Forms.Label showingText;
         private Bunifu.Framework.UI.BunifuCustomDataGrid TrackerView;
+        private System.Windows.Forms.Label exit;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn VatableCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn VatCol;

@@ -48,6 +48,8 @@ namespace AccountingFunctions
         //FTP FUNCTIONS
         public void download(string fileDir, string outDir, string fileName)
         {
+            MessageBox.Show(ftpServer + "/" + fileDir, outDir + "/" + fileName);
+
             client.Credentials = new NetworkCredential(username, password);
             client.DownloadFile(ftpServer + "/" + fileDir, outDir + "/" + fileName);
         }
@@ -75,7 +77,7 @@ namespace AccountingFunctions
             bool inUse;
             string ln;
 
-            download("My Documents/Companies/" + company + "/checkup.txt", compDir, "checkup.txt");
+            download("My Documents/Companies/" + company + "_checkup.txt", compDir, "checkup.txt");
             using (StreamReader file = new StreamReader(compDir + "/checkup.txt"))
             {
                 while ((ln = file.ReadLine()) != null) { ln = file.ReadLine(); }
@@ -87,11 +89,11 @@ namespace AccountingFunctions
 
             if (!inUse)
             {
-                download("My Documents/Companies/" + company + "/Employees.txt", compDir, "Employees.txt");
-                download("My Documents/Companies/" + company + "/Expenses.txt", compDir, "Expenses.txt");
-                download("My Documents/Companies/" + company + "/Sales.txt", compDir, "Sales.txt");
+                download("My Documents/Companies/" + company + "_Employees.txt", compDir, "Employees.txt");
+                download("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
+                download("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
 
-                upload("My Documents/Companies/" + company + "/checkup.txt", mainDir, "use.txt");
+                upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "use.txt");
             }
             File.Delete(compDir + "/checkup.txt");
         }
@@ -109,11 +111,11 @@ namespace AccountingFunctions
 
         public void uploadCompany(string company)
         {
-            upload("My Documents/Companies/" + company + "/Employees.txt", compDir, "Employees.txt");
-            upload("My Documents/Companies/" + company + "/Expenses.txt", compDir, "Expenses.txt");
-            upload("My Documents/Companies/" + company + "/Sales.txt", compDir, "Sales.txt");
+            upload("My Documents/Companies/" + company + "_Employees.txt", compDir, "Employees.txt");
+            upload("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
+            upload("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
 
-            upload("My Documents/Companies/" + company + "/checkup.txt", mainDir, "not.txt");
+            upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "not.txt");
 
             File.Delete(compDir + "/Employees.txt");
             File.Delete(compDir + "/Expenses.txt");
@@ -143,5 +145,20 @@ namespace AccountingFunctions
             }
         }
 
+        //Write to Companies
+        public void writeSales(string[] lines)
+        {
+            File.WriteAllLines(compDir + "/Sales.txt", lines);
+        }
+
+        public void writeExpenses(string[] lines)
+        {
+            File.WriteAllLines(compDir + "/Expenses.txt", lines);
+        }
+
+        public void writeEmployees(string[] lines)
+        {
+            File.WriteAllLines(compDir + "/Employees.txt", lines);
+        }
     }
 }

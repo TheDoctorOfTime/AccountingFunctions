@@ -30,7 +30,7 @@ namespace AccountingFunctions
             foreach(var company in info.Companies)
             {
                 try { CompaniesDrop.Items.Add(company); }
-                catch (Exception) { /*Do Nothing*/ }
+                catch (Exception) { break; }
             }
 
             CompaniesDrop.SelectedIndex = 0;
