@@ -46,7 +46,9 @@ namespace AccountingFunctions
 
         private void BankingButton_Click(object sender, EventArgs e)
         {
-
+            Employees employee = new Employees();
+            employee.Show();
+            this.Hide();
         }
 
         private void SalesButton_Click(object sender, EventArgs e)

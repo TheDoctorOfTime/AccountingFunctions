@@ -34,16 +34,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Employees));
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.TrackerView = new Bunifu.Framework.UI.BunifuCustomDataGrid();
-            this.companyText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
-            this.NameText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
-            this.DashboardButton = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.exit = new System.Windows.Forms.Label();
             this.AccCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BasicCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SSSCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PhDeduction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PagibigCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.companyText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.NameText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.DashboardButton = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.exit = new System.Windows.Forms.Label();
             this.showingText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerView)).BeginInit();
             this.SuspendLayout();
@@ -85,6 +85,48 @@
             this.TrackerView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.TrackerView.Size = new System.Drawing.Size(747, 524);
             this.TrackerView.TabIndex = 12;
+            // 
+            // AccCol
+            // 
+            this.AccCol.HeaderText = "Employee Account";
+            this.AccCol.Name = "AccCol";
+            this.AccCol.ReadOnly = true;
+            this.AccCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccCol.Width = 226;
+            // 
+            // BasicCol
+            // 
+            this.BasicCol.HeaderText = "Basic Pay";
+            this.BasicCol.Name = "BasicCol";
+            this.BasicCol.Width = 125;
+            // 
+            // SSSCol
+            // 
+            this.SSSCol.HeaderText = "SSS deduction";
+            this.SSSCol.Name = "SSSCol";
+            this.SSSCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SSSCol.Width = 75;
+            // 
+            // PhDeduction
+            // 
+            this.PhDeduction.HeaderText = "PhilHealth Deduction";
+            this.PhDeduction.Name = "PhDeduction";
+            this.PhDeduction.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PhDeduction.Width = 75;
+            // 
+            // PagibigCol
+            // 
+            this.PagibigCol.HeaderText = "Pagibig Deduction";
+            this.PagibigCol.Name = "PagibigCol";
+            this.PagibigCol.Width = 75;
+            // 
+            // TotalCol
+            // 
+            this.TotalCol.HeaderText = "Total Pay";
+            this.TotalCol.Name = "TotalCol";
+            this.TotalCol.ReadOnly = true;
+            this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TotalCol.Width = 130;
             // 
             // companyText
             // 
@@ -150,6 +192,7 @@
             this.DashboardButton.Size = new System.Drawing.Size(230, 57);
             this.DashboardButton.TabIndex = 9;
             this.DashboardButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DashboardButton.Click += new System.EventHandler(this.DashboardButton_Click);
             // 
             // exit
             // 
@@ -161,48 +204,7 @@
             this.exit.Size = new System.Drawing.Size(93, 16);
             this.exit.TabIndex = 13;
             this.exit.Text = "exit application";
-            // 
-            // AccCol
-            // 
-            this.AccCol.HeaderText = "Employee Account";
-            this.AccCol.Name = "AccCol";
-            this.AccCol.ReadOnly = true;
-            this.AccCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AccCol.Width = 226;
-            // 
-            // BasicCol
-            // 
-            this.BasicCol.HeaderText = "Basic Pay";
-            this.BasicCol.Name = "BasicCol";
-            this.BasicCol.Width = 125;
-            // 
-            // SSSCol
-            // 
-            this.SSSCol.HeaderText = "SSS deduction";
-            this.SSSCol.Name = "SSSCol";
-            this.SSSCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SSSCol.Width = 75;
-            // 
-            // PhDeduction
-            // 
-            this.PhDeduction.HeaderText = "PhilHealth Deduction";
-            this.PhDeduction.Name = "PhDeduction";
-            this.PhDeduction.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PhDeduction.Width = 75;
-            // 
-            // PagibigCol
-            // 
-            this.PagibigCol.HeaderText = "Pagibig Deduction";
-            this.PagibigCol.Name = "PagibigCol";
-            this.PagibigCol.Width = 75;
-            // 
-            // TotalCol
-            // 
-            this.TotalCol.HeaderText = "Total Pay";
-            this.TotalCol.Name = "TotalCol";
-            this.TotalCol.ReadOnly = true;
-            this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TotalCol.Width = 130;
+            this.exit.Click += new System.EventHandler(this.exit_Click);
             // 
             // showingText
             // 
@@ -230,6 +232,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Employees";
             this.Text = "Employees";
+            this.Load += new System.EventHandler(this.Employees_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TrackerView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
