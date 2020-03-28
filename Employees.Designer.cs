@@ -34,17 +34,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Employees));
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.TrackerView = new Bunifu.Framework.UI.BunifuCustomDataGrid();
+            this.companyText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.NameText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.DashboardButton = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.exit = new System.Windows.Forms.Label();
+            this.showingText = new System.Windows.Forms.Label();
             this.AccCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BasicCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SSSCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PhDeduction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PagibigCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.companyText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
-            this.NameText = new Bunifu.Framework.UI.BunifuMaterialTextbox();
-            this.DashboardButton = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.exit = new System.Windows.Forms.Label();
-            this.showingText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,48 +87,6 @@
             this.TrackerView.TabIndex = 12;
             this.TrackerView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.TrackerView_CellBeginEdit);
             this.TrackerView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.TrackerView_CellEndEdit);
-            // 
-            // AccCol
-            // 
-            this.AccCol.HeaderText = "Employee Account";
-            this.AccCol.Name = "AccCol";
-            this.AccCol.ReadOnly = true;
-            this.AccCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AccCol.Width = 226;
-            // 
-            // BasicCol
-            // 
-            this.BasicCol.HeaderText = "Basic Pay";
-            this.BasicCol.Name = "BasicCol";
-            this.BasicCol.Width = 125;
-            // 
-            // SSSCol
-            // 
-            this.SSSCol.HeaderText = "SSS deduction";
-            this.SSSCol.Name = "SSSCol";
-            this.SSSCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.SSSCol.Width = 75;
-            // 
-            // PhDeduction
-            // 
-            this.PhDeduction.HeaderText = "PhilHealth Deduction";
-            this.PhDeduction.Name = "PhDeduction";
-            this.PhDeduction.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.PhDeduction.Width = 75;
-            // 
-            // PagibigCol
-            // 
-            this.PagibigCol.HeaderText = "Pagibig Deduction";
-            this.PagibigCol.Name = "PagibigCol";
-            this.PagibigCol.Width = 75;
-            // 
-            // TotalCol
-            // 
-            this.TotalCol.HeaderText = "Total Pay";
-            this.TotalCol.Name = "TotalCol";
-            this.TotalCol.ReadOnly = true;
-            this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TotalCol.Width = 130;
             // 
             // companyText
             // 
@@ -220,6 +178,51 @@
             this.showingText.TabIndex = 14;
             this.showingText.Text = "Philippine Peso";
             // 
+            // AccCol
+            // 
+            this.AccCol.HeaderText = "Employee Account";
+            this.AccCol.Name = "AccCol";
+            this.AccCol.ReadOnly = true;
+            this.AccCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccCol.Width = 226;
+            // 
+            // BasicCol
+            // 
+            this.BasicCol.HeaderText = "Basic Pay";
+            this.BasicCol.Name = "BasicCol";
+            this.BasicCol.Width = 125;
+            // 
+            // SSSCol
+            // 
+            this.SSSCol.HeaderText = "SSS deduction";
+            this.SSSCol.Name = "SSSCol";
+            this.SSSCol.ReadOnly = true;
+            this.SSSCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.SSSCol.Width = 75;
+            // 
+            // PhDeduction
+            // 
+            this.PhDeduction.HeaderText = "PhilHealth Deduction";
+            this.PhDeduction.Name = "PhDeduction";
+            this.PhDeduction.ReadOnly = true;
+            this.PhDeduction.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PhDeduction.Width = 75;
+            // 
+            // PagibigCol
+            // 
+            this.PagibigCol.HeaderText = "Pagibig Deduction";
+            this.PagibigCol.Name = "PagibigCol";
+            this.PagibigCol.ReadOnly = true;
+            this.PagibigCol.Width = 75;
+            // 
+            // TotalCol
+            // 
+            this.TotalCol.HeaderText = "Total Pay";
+            this.TotalCol.Name = "TotalCol";
+            this.TotalCol.ReadOnly = true;
+            this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.TotalCol.Width = 130;
+            // 
             // Employees
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -250,12 +253,12 @@
         private Bunifu.Framework.UI.BunifuMaterialTextbox NameText;
         private Bunifu.Framework.UI.BunifuThinButton2 DashboardButton;
         private System.Windows.Forms.Label exit;
+        private System.Windows.Forms.Label showingText;
         private System.Windows.Forms.DataGridViewTextBoxColumn AccCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn BasicCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn SSSCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn PhDeduction;
         private System.Windows.Forms.DataGridViewTextBoxColumn PagibigCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalCol;
-        private System.Windows.Forms.Label showingText;
     }
 }

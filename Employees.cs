@@ -64,10 +64,10 @@ namespace AccountingFunctions
 
                 //Make sure Cell 2 is at least 15k php
 
-                //Fill Deductions
-                TrackerView.Rows[currRow].Cells[2].Value = string.Empty;
-                TrackerView.Rows[currRow].Cells[3].Value = string.Empty;
-                TrackerView.Rows[currRow].Cells[4].Value = string.Empty;
+                //Fill Deductions - Done
+                TrackerView.Rows[currRow].Cells[2].Value = "-300";
+                TrackerView.Rows[currRow].Cells[3].Value = "-250";
+                TrackerView.Rows[currRow].Cells[4].Value = "-550";
 
                 //Compute Total
                 TrackerView.Rows[currRow].Cells[5].Value = string.Empty;
