@@ -182,7 +182,6 @@
             // 
             this.AccCol.HeaderText = "Employee Account";
             this.AccCol.Name = "AccCol";
-            this.AccCol.ReadOnly = true;
             this.AccCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.AccCol.Width = 226;
             // 

@@ -62,7 +62,16 @@ namespace AccountingFunctions
             try
             { mathVal = float.Parse(ValText.Text); }
             catch (Exception)
-            { ValText.Text = ValText.Text.Remove(ValText.Text.Length - 1); }
+            {
+                try
+                {
+                    ValText.Text = ValText.Text.Remove(ValText.Text.Length - 1);
+                }
+                catch (Exception)
+                {
+                    ValText.Text = "0";
+                }
+            }
         }
 
         private void button02_Click(object sender, EventArgs e)
@@ -146,8 +155,82 @@ namespace AccountingFunctions
 
         private void exit_Click(object sender, EventArgs e)
         {
+            //load sales
+            TrackerView.Rows.Clear();
+
+            string[] lines = File.ReadAllLines(data.compDir + "/Sales.txt");
+            try
+            {
+                foreach (string line in lines)
+                {
+                    string[] currLine = line.Split('*');
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                }
+            }
+            catch (Exception)
+            { }
+
+            //write to sales
+            try
+            {
+                string[] output = new string[100000];
+                for (int i = 0; i < TrackerView.Rows.Count; i++)
+                {
+                    //checks if row contains value
+                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    {
+                        account = TrackerView.Rows[i].Cells[0].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+
+                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        output[i] = line;
+                    }
+                    data.writeSales(output);
+                }
+            }
+            catch (Exception) { }
+
+            //load expenses
+            TrackerView.Rows.Clear();
+
+            string[] lines2 = File.ReadAllLines(data.compDir + "/Expenses.txt");
+            try
+            {
+                foreach (string line in lines2)
+                {
+                    string[] currLine = line.Split('*');
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                }
+            }
+            catch (Exception)
+            { }
+
+            //write to expenses
+            try
+            {
+                string[] output = new string[100000];
+                for (int i = 0; i < TrackerView.Rows.Count; i++)
+                {
+                    //checks if row contains value
+                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    {
+                        account = TrackerView.Rows[i].Cells[0].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+
+                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        output[i] = line;
+                    }
+                    data.writeExpenses(output);
+                }
+            }
+            catch (Exception) { }
+
             data.uploadCompany(info.currComp);
-            Application.Exit();
+            if (data.success) Application.Exit();
         }
 
         private void ShowSales_Click(object sender, EventArgs e)
@@ -240,10 +323,113 @@ namespace AccountingFunctions
 
         private void DashboardButton_Click(object sender, EventArgs e)
         {
+            if (isSales)
+            {
+                showExpenses();
+                showSales();
+            }
+            else
+            {
+                showSales();
+                showExpenses();
+            }
+
             data.uploadCompany(info.currComp);
-            Dashboard dashboard = new Dashboard();
-            dashboard.Show();
-            this.Hide();
+
+            if (data.success)
+            {
+                Dashboard dashboard = new Dashboard();
+                dashboard.Show();
+                this.Hide();
+            }
+        }
+
+        private void showExpenses()
+        {
+            //save info to text
+            try
+            {
+                string[] output = new string[100000];
+                for (int i = 0; i < TrackerView.Rows.Count; i++)
+                {
+                    //checks if row contains value
+                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    {
+                        account = TrackerView.Rows[i].Cells[0].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+
+                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        output[i] = line;
+                    }
+                    data.writeSales(output);
+                }
+            }
+            catch (Exception) { }
+
+            //load next
+            TrackerView.Rows.Clear();
+
+            string[] lines = File.ReadAllLines(data.compDir + "/Expenses.txt");
+            try
+            {
+                foreach (string line in lines)
+                {
+                    string[] currLine = line.Split('*');
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                }
+            }
+            catch (Exception)
+            { }
+
+            //confirm
+            isSales = false;
+            showingText.Text = "Expenses";
+        }
+
+        private void showSales()
+        {
+            //save info to text
+            try
+            {
+                string[] output = new string[100000];
+                for (int i = 0; i < TrackerView.Rows.Count; i++)
+                {
+                    //checks if row contains value
+                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    {
+                        account = TrackerView.Rows[i].Cells[0].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+
+                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        output[i] = line;
+                    }
+                    data.writeExpenses(output);
+                }
+            }
+            catch (Exception) { }
+
+            //load next
+            TrackerView.Rows.Clear();
+
+            string[] lines = File.ReadAllLines(data.compDir + "/Sales.txt");
+            try
+            {
+                foreach (string line in lines)
+                {
+                    string[] currLine = line.Split('*');
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                }
+            }
+            catch (Exception)
+            { }
+
+            //confirm
+            isSales = true;
+            showingText.Text = "Sales";
         }
     }
 }

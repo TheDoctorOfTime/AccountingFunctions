@@ -20,6 +20,7 @@ namespace AccountingFunctions
         public string acntDir = @"C:/Users/Public/MDCdevice/Accounts";
         public string compDir = @"C:/Users/Public/MDCdevice/Companies";
         public string infoDir = @"C:/Users/Public/MDCdevice/Info";
+        public bool success;
 
         WebClient client = new WebClient();
 
@@ -48,16 +49,36 @@ namespace AccountingFunctions
         //FTP FUNCTIONS
         public void download(string fileDir, string outDir, string fileName)
         {
-            MessageBox.Show(ftpServer + "/" + fileDir, outDir + "/" + fileName);
+            try
+            {
+                client.Credentials = new NetworkCredential(username, password);
+                client.DownloadFile(ftpServer + "/" + fileDir, outDir + "/" + fileName);
 
-            client.Credentials = new NetworkCredential(username, password);
-            client.DownloadFile(ftpServer + "/" + fileDir, outDir + "/" + fileName);
+                success = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error Loading... Please Try Again");
+
+                success = false;
+            }
         }
 
         public void upload(string fileDir, string upDir, string fileName)
         {
-            client.Credentials = new NetworkCredential(username, password);
-            client.UploadFile(ftpServer + "/" + fileDir, upDir + "/" + fileName);
+            try
+            {
+                client.Credentials = new NetworkCredential(username, password);
+                client.UploadFile(ftpServer + "/" + fileDir, upDir + "/" + fileName);
+
+                success = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error Saving Data... Please Try Again");
+
+                success = false;
+            }
         }
 
         //SPECIFIC FUNCTIONS
@@ -89,37 +110,37 @@ namespace AccountingFunctions
 
             if (!inUse)
             {
-                download("My Documents/Companies/" + company + "_Employees.txt", compDir, "Employees.txt");
-                download("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
-                download("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
+                if(success) download("My Documents/Companies/" + company + "_Employees.txt", compDir, "Employees.txt");
+                if(success) download("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
+                if(success) download("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
 
-                upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "use.txt");
+                if(success) upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "use.txt");
             }
-            File.Delete(compDir + "/checkup.txt");
+            if(success) File.Delete(compDir + "/checkup.txt");
         }
 
         //Uploads
         public void uploadInfo(string user, string[] companies)
         {
-            download("My Documents/Info/" + user + ".txt", infoDir, user + "_download.txt");
+            upload("My Documents/Info/" + user + ".txt", infoDir, user + "_download.txt");
         }
 
         public void uploadAccount(string user)
         {
-            download("My Documents/Accounts/" + user + ".txt", acntDir, user + "_download.txt");
+            upload("My Documents/Accounts/" + user + ".txt", acntDir, user + "_download.txt");
         }
 
         public void uploadCompany(string company)
         {
             upload("My Documents/Companies/" + company + "_Employees.txt", compDir, "Employees.txt");
-            upload("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
-            upload("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
+            if(success) upload("My Documents/Companies/" + company + "_Expenses.txt", compDir, "Expenses.txt");
+            if (success) upload("My Documents/Companies/" + company + "_Sales.txt", compDir, "Sales.txt");
 
-            upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "not.txt");
+            if (success) upload("My Documents/Companies/" + company + "_checkup.txt", mainDir, "not.txt");
 
-            File.Delete(compDir + "/Employees.txt");
-            File.Delete(compDir + "/Expenses.txt");
-            File.Delete(compDir + "/Sales.txt");
+            if (success) File.Delete(compDir + "/Employees.txt");
+            if (success) File.Delete(compDir + "/Expenses.txt");
+            if (success) File.Delete(compDir + "/Sales.txt");
         }
 
         //Deletions
