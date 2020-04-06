@@ -1,0 +1,99 @@
+html
+{
+    font-family: Century Gothic;
+    margin: 0em;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background-color: white;
+}
+
+.header
+{
+    background-color: rgb(170, 29, 135);
+    color: white;
+    font-size: 1.5em;
+    padding: 20px;
+    margin: -10px;
+
+    grid-template-columns: 98% 2%;
+}
+
+.heading
+{
+    margin-top: 2em;
+    font-size: 1.5em;
+}
+
+input
+{
+    border-style: none;
+    border-bottom-style: solid;
+    font-family: Century Gothic;
+    border-color: rgb(96, 181, 230);
+}
+
+.row
+{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.row input
+{
+    width: 90%;
+    margin-top: 10px;
+}
+
+.row input[type=number]
+{
+    -moz-appearance: textfield;
+}
+
+input #total
+{
+    border-bottom: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+footer{
+    font-size: 0.9em;
+    margin: 0px 10%;
+}
+
+.container
+{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+button
+{
+    border: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 5em;
+    background-color: rgb(170, 29, 135);
+    color: white;
+    padding: 1em 2em;
+    margin-top: 5em;
+    margin-left: 1em;
+
+}
+
+button:hover
+{
+    background-color: rgb(96, 181, 230);
+    cursor: pointer;
+}
+
+button:active
+{
+    background-color: rgb(219, 96, 230);
+    cursor: initial;
+}

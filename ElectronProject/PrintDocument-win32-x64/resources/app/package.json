@@ -1,0 +1,16 @@
+{
+  "name": "printview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Rafael Ignacio",
+  "devDependencies": {
+    "electron": "~1.8.2"
+  },
+  "dependencies": {
+    "electron-packager": "^14.2.1"
+  }
+}

@@ -46,8 +46,13 @@
             this.showingText = new System.Windows.Forms.Label();
             this.TrackerView = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.exit = new System.Windows.Forms.Label();
+            this.copyButton = new System.Windows.Forms.Label();
             this.UserCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.QuanCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BaseCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VatableCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PercentCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VatCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.TrackerView)).BeginInit();
@@ -331,7 +336,11 @@
             this.TrackerView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TrackerView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.UserCol,
+            this.ItemCol,
+            this.QuanCol,
+            this.BaseCol,
             this.VatableCol,
+            this.PercentCol,
             this.VatCol,
             this.TotalCol});
             this.TrackerView.DoubleBuffered = true;
@@ -358,27 +367,64 @@
             this.exit.Text = "exit application";
             this.exit.Click += new System.EventHandler(this.exit_Click);
             // 
+            // copyButton
+            // 
+            this.copyButton.AutoSize = true;
+            this.copyButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.copyButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.copyButton.Location = new System.Drawing.Point(28, 392);
+            this.copyButton.Name = "copyButton";
+            this.copyButton.Size = new System.Drawing.Size(145, 16);
+            this.copyButton.TabIndex = 9;
+            this.copyButton.Text = "Capy Value to Clipboard";
+            this.copyButton.Click += new System.EventHandler(this.exit_Click);
+            // 
             // UserCol
             // 
             this.UserCol.HeaderText = "User";
             this.UserCol.Name = "UserCol";
             this.UserCol.ReadOnly = true;
             this.UserCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.UserCol.Width = 226;
+            // 
+            // ItemCol
+            // 
+            this.ItemCol.HeaderText = "Particular";
+            this.ItemCol.Name = "ItemCol";
+            this.ItemCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemCol.Width = 120;
+            // 
+            // QuanCol
+            // 
+            this.QuanCol.HeaderText = "Quantity";
+            this.QuanCol.Name = "QuanCol";
+            this.QuanCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.QuanCol.Width = 60;
+            // 
+            // BaseCol
+            // 
+            this.BaseCol.HeaderText = "Price";
+            this.BaseCol.Name = "BaseCol";
+            this.BaseCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.BaseCol.Width = 75;
             // 
             // VatableCol
             // 
             this.VatableCol.HeaderText = "Vatable";
             this.VatableCol.Name = "VatableCol";
             this.VatableCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.VatableCol.Width = 150;
+            // 
+            // PercentCol
+            // 
+            this.PercentCol.HeaderText = "%";
+            this.PercentCol.Name = "PercentCol";
+            this.PercentCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.PercentCol.Width = 40;
             // 
             // VatCol
             // 
             this.VatCol.HeaderText = "Vat";
             this.VatCol.Name = "VatCol";
             this.VatCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.VatCol.Width = 150;
             // 
             // TotalCol
             // 
@@ -386,13 +432,14 @@
             this.TotalCol.Name = "TotalCol";
             this.TotalCol.ReadOnly = true;
             this.TotalCol.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.TotalCol.Width = 180;
+            this.TotalCol.Width = 110;
             // 
             // SalesExpensesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1065, 645);
+            this.Controls.Add(this.copyButton);
             this.Controls.Add(this.exit);
             this.Controls.Add(this.TrackerView);
             this.Controls.Add(this.showingText);
@@ -433,8 +480,13 @@
         private System.Windows.Forms.Label showingText;
         private Bunifu.Framework.UI.BunifuCustomDataGrid TrackerView;
         private System.Windows.Forms.Label exit;
+        private System.Windows.Forms.Label copyButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn QuanCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BaseCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn VatableCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PercentCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn VatCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalCol;
     }

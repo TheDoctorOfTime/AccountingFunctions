@@ -11,11 +11,13 @@ using System.IO;
 
 namespace AccountingFunctions
 {
+    //sample format: Account*Particular*Count*Price*Multiple*percentage*deduction*total
+    // example text: RafaelIgnacio*Processors*12*5000*60000*.12%*72*59928
     public partial class SalesExpensesForm : Form
     {
         Files data = new Files();
         bool isSales = true;
-        string account, vatable, vat, total;
+        string account, particular, quantity, price, vatable, percentage, vat, total;
         int currRow;
 
         float mathVal;
@@ -39,11 +41,11 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
+            }catch (Exception)
+            {
             }
-            catch (Exception)
-            { }
             
         }
 
@@ -102,53 +104,87 @@ namespace AccountingFunctions
 
         private void TrackerView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            //Check for letters and other values
-            //string input = TrackerView.CurrentCell.Value.ToString();
-            //foreach(char i in input)
-            //{ if (i != '1' || i != '2' || i != '3' || i != '4' || i != '5' || i != '6' || i != '7' || i != '8' || i != '9' || i != '0' || i != '.') TrackerView.CurrentCell.Value = "0"; }
+            float quantity = 0;
+            float price = 0;
 
-            //if both are filled properly
+            float multiplier = 0;
+
+            float Val1 = 0;
+            float Val2 = 0;
+
+            //Define quantity and price and Vat
+            try { quantity = float.Parse(TrackerView.Rows[currRow].Cells[2].Value.ToString()); } catch (Exception) { TrackerView.Rows[currRow].Cells[2].Value = string.Empty; }
+            try { price    = float.Parse(TrackerView.Rows[currRow].Cells[3].Value.ToString()); } catch (Exception) { TrackerView.Rows[currRow].Cells[3].Value = string.Empty; }
+            try { Val2     = float.Parse(TrackerView.Rows[currRow].Cells[6].Value.ToString()); } catch (Exception) { TrackerView.Rows[currRow].Cells[6].Value = string.Empty; }
+
+            //Make sure % is .2/.5/.10/.12 % only
             try
             {
-                if (TrackerView.Rows[currRow].Cells[1].Value != null && TrackerView.Rows[currRow].Cells[2].Value != null)
+                if (
+                    (TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".2%"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".2"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.2%"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.2" ) &&
+                    (TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".5%"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".5"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.5%"  && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.5" ) &&
+                    (TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".10%" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".10" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.10%" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.10") &&
+                    (TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".12%" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != ".12" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.12%" && TrackerView.Rows[currRow].Cells[5].Value.ToString() != "0.12")
+                ) 
+                { TrackerView.Rows[currRow].Cells[5].Value = string.Empty; }
+                else
                 {
-                    float Val1 = float.Parse(TrackerView.Rows[currRow].Cells[1].Value.ToString());
-                    float Val2 = 0;
+                    if (TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".2%"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".2"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.2%"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.2" ) multiplier = 0.002f ;
+                    if (TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".5%"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".5"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.5%"  || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.5" ) multiplier = 0.005f ;
+                    if (TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".10%" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".10" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.10%" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.10") multiplier = 0.001f ;
+                    if (TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".12%" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == ".12" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.12%" || TrackerView.Rows[currRow].Cells[5].Value.ToString() == "0.12") multiplier = 0.0012f;
+                }
+            }
+            catch (Exception) { }
+
+            //Calculate Total
+            try
+            {
+                if (
+                    TrackerView.Rows[currRow].Cells[1].Value != null &&
+                    TrackerView.Rows[currRow].Cells[2].Value != null &&
+                    TrackerView.Rows[currRow].Cells[3].Value != null &&
+                       (
+                        TrackerView.Rows[currRow].Cells[5].Value != null ||
+                        TrackerView.Rows[currRow].Cells[6].Value != null
+                       )
+                   )
+                {
+                    //Vatable
+                    Val1 = quantity * price;
+                    TrackerView.Rows[currRow].Cells[4].Value = Val1;
+
+                    if (TrackerView.Rows[currRow].Cells[5].Value != null)
+                    {
+                        TrackerView.Rows[currRow].Cells[6].Value = (multiplier * Val1);
+                    }
+                    else if (TrackerView.Rows[currRow].Cells[6].Value != null)
+                    {
+                        TrackerView.Rows[currRow].Cells[5].Value = ((Val2 / Val1) * 100) + "%";
+                        multiplier = (Val2 / Val1) * 100;
+                    }
+
+                    if (multiplier == 0.002) TrackerView.Rows[currRow].Cells[5].Value = "0.2%";
+                    if (multiplier == 0.005) TrackerView.Rows[currRow].Cells[5].Value = "0.5%";
+                    if (multiplier == 0.001) TrackerView.Rows[currRow].Cells[5].Value = "0.10%";
+                    if (multiplier == 0.0012) TrackerView.Rows[currRow].Cells[5].Value = "0.12%";
 
                     try
                     {
-                        string Val2str = TrackerView.Rows[currRow].Cells[2].Value.ToString();
-                        string[] num = Val2str.Split(')');
-                        
-                        if(num[0].Contains("(2%") || num[0].Contains("(5%") || num[0].Contains("(10%") || num[0].Contains("(12%"))
-                        {
-                            Val2 = float.Parse(num[1]);
+                        float sol1 = Val1 + Val2;
+                        float sol2 = Val1 - Val2;
 
-                            float sol1 = Val1 + Val2;
-                            float sol2 = Val1 - Val2;
+                        string add = sol1.ToString();
+                        string sub = sol2.ToString();
 
-                            string add = sol1.ToString();
-                            string sub = sol2.ToString();
-
-                            if (isSales) TrackerView.Rows[currRow].Cells[3].Value = add;
-                            if (!isSales) TrackerView.Rows[currRow].Cells[3].Value = sub;
-                        }
-                        else
-                        {
-                            TrackerView.Rows[currRow].Cells[3].Value = "Input Vat Percentage using (percentage%)Vat";
-                        }
-                    }
-                    catch (Exception) { TrackerView.Rows[currRow].Cells[3].Value = "Input Vat Percentage using (percentage%)Vat"; }
-
-                }
-                else
-                {
-
+                        if (isSales)  TrackerView.Rows[currRow].Cells[7].Value = add;
+                        if (!isSales) TrackerView.Rows[currRow].Cells[7].Value = sub;
+                    } catch (Exception) {  }
                 }
             }
             catch (Exception)
             {
-                TrackerView.Rows[currRow].Cells[3].Value = "Invalid Character/s";
+                TrackerView.Rows[currRow].Cells[7].Value = "Invalid Character/s";
             }
             
         }
@@ -164,7 +200,7 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
@@ -177,14 +213,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
-                        account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        account     = TrackerView.Rows[i].Cells[0].Value.ToString();
+                        particular  = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity    = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price       = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable     = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage  = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat         = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total       = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeSales(output);
@@ -201,7 +249,7 @@ namespace AccountingFunctions
                 foreach (string line in lines2)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
@@ -214,14 +262,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
                         account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        particular = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeExpenses(output);
@@ -242,14 +302,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if(TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
                         account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat     = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total   = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        particular = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeExpenses(output);
@@ -266,7 +338,7 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
@@ -286,14 +358,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
                         account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat     = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total   = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        particular = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeSales(output);
@@ -310,7 +394,7 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
@@ -353,14 +437,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
                         account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        particular = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeSales(output);
@@ -377,7 +473,7 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
@@ -397,14 +493,26 @@ namespace AccountingFunctions
                 for (int i = 0; i < TrackerView.Rows.Count; i++)
                 {
                     //checks if row contains value
-                    if (TrackerView.Rows[i].Cells[0].Value != null && TrackerView.Rows[i].Cells[1].Value != null && TrackerView.Rows[i].Cells[2].Value != null && TrackerView.Rows[i].Cells[3].Value != null)
+                    if (
+                        TrackerView.Rows[i].Cells[0].Value != null &&
+                        TrackerView.Rows[i].Cells[1].Value != null &&
+                        TrackerView.Rows[i].Cells[2].Value != null &&
+                        TrackerView.Rows[i].Cells[3].Value != null &&
+                        TrackerView.Rows[i].Cells[4].Value != null &&
+                        TrackerView.Rows[i].Cells[5].Value != null &&
+                        TrackerView.Rows[i].Cells[6].Value != null &&
+                        TrackerView.Rows[i].Cells[7].Value != null)
                     {
                         account = TrackerView.Rows[i].Cells[0].Value.ToString();
-                        vatable = TrackerView.Rows[i].Cells[1].Value.ToString();
-                        vat = TrackerView.Rows[i].Cells[2].Value.ToString();
-                        total = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        particular = TrackerView.Rows[i].Cells[1].Value.ToString();
+                        quantity = TrackerView.Rows[i].Cells[2].Value.ToString();
+                        price = TrackerView.Rows[i].Cells[3].Value.ToString();
+                        vatable = TrackerView.Rows[i].Cells[4].Value.ToString();
+                        percentage = TrackerView.Rows[i].Cells[5].Value.ToString();
+                        vat = TrackerView.Rows[i].Cells[6].Value.ToString();
+                        total = TrackerView.Rows[i].Cells[7].Value.ToString();
 
-                        string line = account + "*" + vatable + "*" + vat + "*" + total;
+                        string line = account + "*" + particular + "*" + quantity + "*" + price + "*" + vatable + "*" + percentage + "*" + vat + "*" + total;
                         output[i] = line;
                     }
                     data.writeExpenses(output);
@@ -421,7 +529,7 @@ namespace AccountingFunctions
                 foreach (string line in lines)
                 {
                     string[] currLine = line.Split('*');
-                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3]);
+                    TrackerView.Rows.Add(currLine[0], currLine[1], currLine[2], currLine[3], currLine[4], currLine[5], currLine[6], currLine[7]);
                 }
             }
             catch (Exception)
